@@ -122,14 +122,20 @@ export default {
 		sortedContents(contents) {
 			return sortNodes(contents);
 		},
-		sortedContentsFlatChildren(sortedContents) {
-			return recursivelyFlattenChildren(sortedContents);
+		flatContents(sortedContents) {
+			return flattenTree(sortedContents);
 		},
-		flatContents(sortedContentsFlatChildren) {
-			return flattenTree(sortedContentsFlatChildren);
+		flatContentsFlatChildren(flatContents) {
+			return flatContents.map(node => {
+				node = Object.assign({}, node);
+				if (node.type === 'directory')
+					node.flatChildren = flattenTree(node.children);
+
+				return node;
+			})
 		},
-		index(flatContents) {
-			return new Fuse(flatContents, {
+		index(flatContentsFlatChildren) {
+			return new Fuse(flatContentsFlatChildren, {
 				id: 'path',
 				keys: [
 					'path',
