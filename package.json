@@ -1,0 +1,32 @@
+{
+  "name": "index2",
+  "version": "0.1.0",
+  "description": "Single-file web index for static files",
+  "main": "index.php",
+  "repository": "git@github.com:jacobmischka/index2.git",
+  "author": "Jacob Mischka <jacob@mischka.me>",
+  "contributors": [
+    "Alison Saia <allie@saia.me>"
+  ],
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "start": "webpack -w",
+    "build": "webpack -p",
+    "serve": "php -S localhost:8080 -t dist/"
+  },
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.1",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.9.0",
+    "html-webpack-inline-source-plugin": "^0.0.9",
+    "html-webpack-plugin": "^2.30.1",
+    "stylelint": "^8.2.0",
+    "svelte": "^1.41.0",
+    "svelte-loader": "^2.1.0",
+    "webpack": "^3.8.1"
+  }
+}
