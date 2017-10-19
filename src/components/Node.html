@@ -1,0 +1,41 @@
+<div class="node">
+	<span class="icon">
+		icon
+	</span>
+	<span class="name">
+		{{ name }}
+	</span>
+	<span class="size">
+		{{ size }}
+	</span>
+	<span class="last-modified">
+		{{ lastModified }}
+	</span>
+</div>
+
+<script>
+export default {
+	data() {
+		return {
+			name: '',
+			size: 0,
+			lastModified: 'today'
+		};
+	}
+};
+</script>
+
+<style>
+	.node {
+		display: flex;
+		flex-direction: row;
+	}
+
+	.node span {
+		margin: 1em;
+	}
+
+	.name {
+		flex-grow: 1;
+	}
+</style>

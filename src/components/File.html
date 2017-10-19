@@ -1,1 +1,23 @@
-<!-- TODO -->
+<div class="file">
+	<Node name="{{ name }}"
+		size="{{ size }}"
+		lastModified="{{ lastModified }}" />
+</div>
+
+<script>
+import Node from './Node.html';
+
+export default {
+	data() {
+		return {
+			name: '',
+			size: 0,
+			lastModified: 'today'
+		};
+	},
+
+	components: {
+		Node
+	}
+};
+</script>

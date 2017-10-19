@@ -1,1 +1,62 @@
-<!-- TODO -->
+<div class="directory">
+	<button type="button">Expand</button>
+	<div class="details">
+		<Node name="{{ name }}"
+			size="{{ size }}"
+			lastModified="{{ lastModified }}" />
+
+		<div class="children">
+			{{#each children as child}}
+				{{#if child.type === 'directory'}}
+					<Directory
+						name="{{ child.name }}"
+						size="{{ child.size }}"
+						lastModified="{{ lastModified}}"
+						children="{{ child.children }}" />
+				{{else}}
+					<File
+						name="{{ child.name }}"
+						size="{{ child.size }}"
+						lastModified="{{ lastModified}}" />
+				{{/if}}
+			{{/each}}
+		</div>
+	</div>
+</div>
+
+<script>
+import Node from './Node.html';
+import File from './File.html';
+
+export default {
+	data() {
+		return {
+			name: '',
+			size: 0,
+			lastModified: 'today',
+			children: []
+		};
+	},
+
+	components: {
+		Node,
+		File
+	}
+};
+</script>
+
+<style>
+	.directory {
+		display: flex;
+		flex-direction: row;
+		align-items: flex-start;
+	}
+
+	.details {
+		flex-grow: 1;
+	}
+
+	.children {
+		margin-left: 2em;
+	}
+</style>

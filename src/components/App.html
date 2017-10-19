@@ -1,19 +1,78 @@
-<p>
-	{{ text }}
-</p>
+<div class="app">
+	<header>
+		<h1>{{ title }}</h1>
+
+		<input type="search" />
+	</header>
+
+	<div>
+		{{#each contents as child}}
+			{{#if child.type === 'directory'}}
+				<Directory
+					name="{{ child.name }}"
+					size="{{ child.size }}"
+					lastModified="{{ child.lastModified }}"
+					children="{{ child.children }}" />
+			{{else}}
+				<File
+					name="{{ child.name }}"
+					size="{{ child.size }}"
+					lastModified="{{ child.lastModified }}" />
+			{{/if}}
+		{{/each}}
+	</div>
+</div>
 
 <script>
+import Directory from './Directory.html';
+import File from './File.html';
+
 export default {
 	data() {
 		return {
-			text: 'Hello, world!'
+			title: 'index2',
+			contents: [
+				{
+					"type": "directory",
+					"name": ".",
+					"size": "403942",
+					"lastModified": "2017-10-18",
+					"children": [
+						{
+							"type": "file",
+							"name": "testfile.png",
+							"size": "523",
+							"lastModified": "2017-10-18"
+						},
+						{
+							"type": "file",
+							"name": "testfile2.png",
+							"size": "523",
+							"lastModified": "2017-10-18"
+						}
+					]
+				}
+			]
 		};
+	},
+
+	components: {
+		Directory,
+		File
 	}
 };
 </script>
 
 <style>
-	p {
-		color: blue;
+	header {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		margin-bottom: 2em;
+	}
+
+	h1 {
+		margin: 0;
+		flex-grow: 1;
 	}
 </style>
