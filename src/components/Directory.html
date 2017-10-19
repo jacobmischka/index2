@@ -8,7 +8,7 @@
 		<div class="children">
 			{{#each children as child}}
 				{{#if child.type === 'directory'}}
-					<Directory
+					<:Self
 						name="{{ child.name }}"
 						size="{{ child.size }}"
 						lastModified="{{ lastModified}}"
