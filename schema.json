@@ -1,0 +1,50 @@
+{
+	"$id": "https://raw.githubusercontent.com/jacobmischka/index2/master/package.json#",
+	"type": "array",
+	"items": {
+		"oneOf": [
+			{"$ref": "#/definitions/file"},
+			{"$ref": "#/definitions/directory"}
+		]
+	},
+	"definitions": {
+		"file": {
+			"title": "File",
+			"type": "object",
+			"properties": {
+				"type": {"const": "file"},
+				"mime": {"type": "string"},
+				"name": {"type": "string"},
+				"size": {
+					"type": "object",
+					"properties": {
+						"value": {"type": "number"},
+						"unit": {"type": "string"}
+					}
+				}
+			},
+			"required": [
+				"type",
+				"name"
+			]
+		},
+		"directory": {
+			"title": "Directory",
+			"type": "object",
+			"properties": {
+				"type": {"const": "directory"},
+				"name": {"type": "string"},
+				"contents": {
+					"type": "array",
+					"items": {
+						"$ref": "#"
+					}
+				}
+			},
+			"required": [
+				"type",
+				"name"
+			]
+		}
+	}
+}

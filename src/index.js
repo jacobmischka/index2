@@ -1,3 +1,5 @@
-import './style.css';
+import App from './components/App.html';
 
-console.log('Hello, world!');
+new App({
+	target: document.querySelector('main')
+});
