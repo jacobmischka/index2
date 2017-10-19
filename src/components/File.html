@@ -1,4 +1,4 @@
-<div class="file">
+<div class="{{ `file ${hidden ? 'hidden' : ''}` }}">
 	<Node name="{{ name }}"
 		size="{{ size }}"
 		lastModified="{{ lastModified }}" />
@@ -12,7 +12,8 @@ export default {
 		return {
 			name: '',
 			size: 0,
-			lastModified: 'today'
+			lastModified: 'today',
+			hidden: false
 		};
 	},
 
@@ -21,3 +22,9 @@ export default {
 	}
 };
 </script>
+
+<style>
+	.file.hidden {
+		display: none;
+	}
+</style>

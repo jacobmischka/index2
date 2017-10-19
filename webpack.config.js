@@ -22,13 +22,7 @@ module.exports = {
 				test: /\.html$/,
 				use: [
 					'babel-loader',
-					{
-						loader: 'svelte-loader',
-						options: {
-							hydratable: true,
-							legacy: true
-						}
-					}
+					'svelte-loader'
 				]
 			},
 			{

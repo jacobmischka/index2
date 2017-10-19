@@ -1,4 +1,4 @@
-<div class="directory">
+<div class="{{ `directory ${hidden ? 'hidden' : ''}` }}">
 	<button type="button" on:click="set({expanded: !expanded})">
 		{{ expanded ? 'Close': 'Open' }}
 	</button>
@@ -9,18 +9,20 @@
 
 		{{#if expanded}}
 			<div class="children">
-				{{#each children as child}}
+				{{#each sortedChildren as child}}
 					{{#if child.type === 'directory'}}
 						<:Self
 							name="{{ child.name }}"
 							size="{{ child.size }}"
 							lastModified="{{ lastModified}}"
-							children="{{ child.children }}" />
+							children="{{ child.children }}"
+							hidden="{{ child.hidden }}" />
 					{{else}}
 						<File
 							name="{{ child.name }}"
 							size="{{ child.size }}"
-							lastModified="{{ lastModified}}" />
+							lastModified="{{ lastModified}}"
+							hidden="{{ child.hidden }}" />
 					{{/if}}
 				{{/each}}
 			</div>
@@ -32,6 +34,8 @@
 import Node from './Node.html';
 import File from './File.html';
 
+import { sortNodes } from '../utils.js';
+
 export default {
 	data() {
 		return {
@@ -39,9 +43,16 @@ export default {
 			size: 0,
 			lastModified: 'today',
 			children: [],
+			hidden: false,
 
 			expanded: false
 		};
+	},
+
+	computed: {
+		sortedChildren(children) {
+			return sortNodes(children);
+		}
 	},
 
 	components: {
@@ -56,6 +67,10 @@ export default {
 		display: flex;
 		flex-direction: row;
 		align-items: flex-start;
+	}
+
+	.directory.hidden {
+		display: none;
 	}
 
 	.details {

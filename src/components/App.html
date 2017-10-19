@@ -2,30 +2,41 @@
 	<header>
 		<h1>{{ title }}</h1>
 
-		<input type="search" />
+		<input type="search" bind:value="search" />
 	</header>
 
 	<div>
-		{{#each contents as child}}
+		{{#each searchedContents as child}}
 			{{#if child.type === 'directory'}}
 				<Directory
 					name="{{ child.name }}"
 					size="{{ child.size }}"
 					lastModified="{{ child.lastModified }}"
-					children="{{ child.children }}" />
+					children="{{ child.children }}"
+					hidden="{{ child.hidden }}" />
 			{{else}}
 				<File
 					name="{{ child.name }}"
 					size="{{ child.size }}"
-					lastModified="{{ child.lastModified }}" />
+					lastModified="{{ child.lastModified }}"
+					hidden="{{ child.hidden }}" />
 			{{/if}}
 		{{/each}}
 	</div>
 </div>
 
 <script>
+import Fuse from 'fuse.js';
+
 import Directory from './Directory.html';
 import File from './File.html';
+
+import {
+	flattenTree,
+	recursivelyFlattenChildren,
+	sortNodes,
+	traverseTree
+} from '../utils.js';
 
 export default {
 	data() {
@@ -34,26 +45,112 @@ export default {
 			contents: [
 				{
 					"type": "directory",
-					"name": ".",
+					"name": "testdir",
 					"size": "403942",
 					"lastModified": "2017-10-18",
+					"path": "testdir",
 					"children": [
 						{
 							"type": "file",
 							"name": "testfile.png",
 							"size": "523",
-							"lastModified": "2017-10-18"
+							"lastModified": "2017-10-18",
+							"path": "testdir/testfile.png"
 						},
 						{
 							"type": "file",
 							"name": "testfile2.png",
 							"size": "523",
-							"lastModified": "2017-10-18"
+							"lastModified": "2017-10-18",
+							"path": "testdir/testfile2.png"
+						},
+						{
+							"type": "directory",
+							"name": "nested directory",
+							"size": "52321",
+							"lastModified": "2017-10-18",
+							"path": "testdir/nested directory",
+							"children": [
+								{
+									"type": "file",
+									"name": "cake.txt",
+									"size": "523",
+									"lastModified": "2017-10-18",
+									"path": "testdir2/cake.txt"
+								},
+								{
+									"type": "file",
+									"name": "pie.md",
+									"size": "523",
+									"lastModified": "2017-10-18",
+									"path": "testdir2/pie.md"
+								}
+							]
+						}
+					]
+				},
+				{
+					"type": "directory",
+					"name": "testdir2",
+					"size": "403942",
+					"lastModified": "2017-10-18",
+					"path": "testdir2",
+					"children": [
+						{
+							"type": "file",
+							"name": "apple.png",
+							"size": "523",
+							"lastModified": "2017-10-18",
+							"path": "testdir2/apple.png"
+						},
+						{
+							"type": "file",
+							"name": "banana.jpg",
+							"size": "523",
+							"lastModified": "2017-10-18",
+							"path": "testdir2/banana.jpg"
 						}
 					]
 				}
-			]
+			],
+
+			search: ''
 		};
+	},
+
+	computed: {
+		sortedContents(contents) {
+			return sortNodes(contents);
+		},
+		sortedContentsFlatChildren(sortedContents) {
+			return recursivelyFlattenChildren(sortedContents);
+		},
+		flatContents(sortedContentsFlatChildren) {
+			return flattenTree(sortedContentsFlatChildren);
+		},
+		index(flatContents) {
+			return new Fuse(flatContents, {
+				id: 'path',
+				keys: [
+					'path',
+					'flatChildren.path'
+				]
+			});
+		},
+		searchResults(index, search) {
+			return search
+				? index.search(search)
+				: index.list.map(node => node.path);
+		},
+		searchedContents(sortedContents, searchResults) {
+			return traverseTree(sortedContents, node => {
+				let hidden = !searchResults.includes(node.path);
+
+				return Object.assign({}, node, {
+					hidden
+				});
+			});
+		}
 	},
 
 	components: {
