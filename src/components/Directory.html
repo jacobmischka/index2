@@ -1,26 +1,30 @@
 <div class="directory">
-	<button type="button">Expand</button>
+	<button type="button" on:click="set({expanded: !expanded})">
+		{{ expanded ? 'Close': 'Open' }}
+	</button>
 	<div class="details">
 		<Node name="{{ name }}"
 			size="{{ size }}"
 			lastModified="{{ lastModified }}" />
 
-		<div class="children">
-			{{#each children as child}}
-				{{#if child.type === 'directory'}}
-					<:Self
-						name="{{ child.name }}"
-						size="{{ child.size }}"
-						lastModified="{{ lastModified}}"
-						children="{{ child.children }}" />
-				{{else}}
-					<File
-						name="{{ child.name }}"
-						size="{{ child.size }}"
-						lastModified="{{ lastModified}}" />
-				{{/if}}
-			{{/each}}
-		</div>
+		{{#if expanded}}
+			<div class="children">
+				{{#each children as child}}
+					{{#if child.type === 'directory'}}
+						<:Self
+							name="{{ child.name }}"
+							size="{{ child.size }}"
+							lastModified="{{ lastModified}}"
+							children="{{ child.children }}" />
+					{{else}}
+						<File
+							name="{{ child.name }}"
+							size="{{ child.size }}"
+							lastModified="{{ lastModified}}" />
+					{{/if}}
+				{{/each}}
+			</div>
+		{{/if}}
 	</div>
 </div>
 
@@ -34,7 +38,9 @@ export default {
 			name: '',
 			size: 0,
 			lastModified: 'today',
-			children: []
+			children: [],
+
+			expanded: false
 		};
 	},
 
