@@ -27,7 +27,13 @@ module.exports = {
 			},
 			{
 				test: /\.svg$/,
+				exclude: /node_modules/,
 				use: 'svg-inline-loader'
+			},
+			{
+				test: /\.(eot|svg|ttf|woff|woff2)$/,
+				include: /node_modules/,
+				use: 'base64-inline-loader'
 			},
 			{
 				test: /\.css$/,

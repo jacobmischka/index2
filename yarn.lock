@@ -786,6 +786,14 @@ balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
 
+base64-inline-loader@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/base64-inline-loader/-/base64-inline-loader-1.1.0.tgz#9f0f527dfe2a97eff709ec4b5b486fa4b1965953"
+  dependencies:
+    file-loader "^0.10.0"
+    loader-utils "^0.2.16"
+    mime-types "^2.1.12"
+
 base64-js@^1.0.2:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/base64-js/-/base64-js-1.2.1.tgz#a91947da1f4a516ea38e5b4ec0ec3773675e0886"
@@ -1904,6 +1912,12 @@ file-entry-cache@^2.0.0:
   dependencies:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
+
+file-loader@^0.10.0:
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-0.10.1.tgz#815034119891fc6441fb5a64c11bc93c22ddd842"
+  dependencies:
+    loader-utils "^1.0.2"
 
 filename-regex@^2.0.0:
   version "2.0.1"
@@ -4715,6 +4729,14 @@ type-check@~0.3.2:
 typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
+
+typeface-droid-sans-mono@^0.0.40:
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/typeface-droid-sans-mono/-/typeface-droid-sans-mono-0.0.40.tgz#d1c1fe350227e188ec43d4d29732294cca973883"
+
+typeface-khand@^0.0.40:
+  version "0.0.40"
+  resolved "https://registry.yarnpkg.com/typeface-khand/-/typeface-khand-0.0.40.tgz#4ac5016a4f0df6941c5d564d145cc85e18d84267"
 
 uglify-js@3.1.x:
   version "3.1.4"
