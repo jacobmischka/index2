@@ -52,3 +52,15 @@ export function recursivelyFlattenChildren(contents) {
 		return node;
 	});
 }
+
+export function getBasename(name) {
+	return name.includes('.')
+		? name.substring(0, name.lastIndexOf('.'))
+		: name;
+}
+
+export function getExtension(name) {
+	return name.includes('.')
+		? name.substring(name.lastIndexOf('.'))
+		: '';
+}

@@ -1,5 +1,6 @@
 <div class="node">
 	<span class="icon">
+		{{{ icon }}}
 	</span>
 	<span class="name">
 		<a href="#">
@@ -16,28 +17,31 @@
 </div>
 
 <script>
-	export default {
-		data() {
-			return {
-				name: '',
-				size: 0,
-				lastModified: 'today'
-			};
-		},
+import { getBasename, getExtension } from '../utils.js';
+import { getIcon } from '../icons.js';
 
-		computed: {
-			basename(name) {
-				return name.includes('.')
-					? name.substring(0, name.lastIndexOf('.'))
-					: name;
-			},
-			extension(name) {
-				return name.includes('.')
-					? name.substring(name.lastIndexOf('.'))
-					: '';
-			}
+export default {
+	data() {
+		return {
+			type: 'file',
+			name: '',
+			size: 0,
+			lastModified: 'today'
+		};
+	},
+
+	computed: {
+		basename(name) {
+			return getBasename(name);
+		},
+		extension(name) {
+			return getExtension(name);
+		},
+		icon(extension, type) {
+			return getIcon(extension, type);
 		}
-	};
+	}
+};
 </script>
 
 <style>
@@ -63,5 +67,11 @@
 
 	.extension {
 		color: #E3F2FD;
+	}
+
+	svg {
+		width: 2em;
+		height: 2em;
+		margin: 0.5em;
 	}
 </style>

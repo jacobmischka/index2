@@ -2,7 +2,8 @@
 	<button type="button" class="{{ expanded ? 'contract' : 'expand' }}" on:click="set({expanded: !expanded})">
 	</button>
 	<div class="details">
-		<Node name="{{ name }}"
+		<Node type="directory"
+			name="{{ name }}"
 			size="{{ size }}"
 			lastModified="{{ lastModified }}" />
 
@@ -13,14 +14,14 @@
 						<:Self
 							name="{{ child.name }}"
 							size="{{ child.size }}"
-							lastModified="{{ lastModified}}"
+							lastModified="{{ lastModified }}"
 							children="{{ child.children }}"
 							hidden="{{ child.hidden }}" />
 					{{else}}
 						<File
 							name="{{ child.name }}"
 							size="{{ child.size }}"
-							lastModified="{{ lastModified}}"
+							lastModified="{{ lastModified }}"
 							hidden="{{ child.hidden }}" />
 					{{/if}}
 				{{/each}}
