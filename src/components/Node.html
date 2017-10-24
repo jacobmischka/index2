@@ -1,9 +1,11 @@
 <div class="node">
 	<span class="icon">
-		icon
 	</span>
 	<span class="name">
-		{{ name }}
+		<a href="#">
+			<span>{{ basename }}</span>
+			<span class="extension">{{ extension }}</span>
+		</a>
 	</span>
 	<span class="size">
 		{{ size }}
@@ -14,28 +16,52 @@
 </div>
 
 <script>
-export default {
-	data() {
-		return {
-			name: '',
-			size: 0,
-			lastModified: 'today'
-		};
-	}
-};
+	export default {
+		data() {
+			return {
+				name: '',
+				size: 0,
+				lastModified: 'today'
+			};
+		},
+
+		computed: {
+			basename(name) {
+				return name.includes('.')
+					? name.substring(0, name.lastIndexOf('.'))
+					: name;
+			},
+			extension(name) {
+				return name.includes('.')
+					? name.substring(name.lastIndexOf('.'))
+					: '';
+			}
+		}
+	};
 </script>
 
 <style>
 	.node {
 		display: flex;
 		flex-direction: row;
+		align-items: center;
+		margin-bottom: 1em;
 	}
 
-	.node span {
-		margin: 1em;
+	.size,
+	.last-modified {
+		margin-left: 3em;
+		color: #CFD8DC;
+		font-family: 'Share Tech Mono', monospace;
+		font-size: 1rem;
+		letter-spacing: -0.01rem;
 	}
 
 	.name {
 		flex-grow: 1;
+	}
+
+	.extension {
+		color: #E3F2FD;
 	}
 </style>

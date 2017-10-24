@@ -1,6 +1,5 @@
 <div class="{{ `directory ${hidden ? 'hidden' : ''}` }}">
-	<button type="button" on:click="set({expanded: !expanded})">
-		{{ expanded ? 'Close': 'Open' }}
+	<button type="button" class="{{ expanded ? 'contract' : 'expand' }}" on:click="set({expanded: !expanded})">
 	</button>
 	<div class="details">
 		<Node name="{{ name }}"
@@ -79,5 +78,20 @@ export default {
 
 	.children {
 		margin-left: 2em;
+	}
+
+	.directory > .details > .node:before {
+		content: '';
+		display: block;
+		background: #777;
+		transform: rotate(45deg);
+	}
+
+	.directory > .details > .node > .name > a {
+		color: #37474F;
+	}
+
+	.directory > .details > .node > .name > a:hover {
+		color: #78909C;
 	}
 </style>

@@ -1,27 +1,28 @@
 <div class="app">
-	<header>
-		<h1>{{ title }}</h1>
+	<div class="wrapper">
+		<header>
+			<h1>{{ title }}</h1>
+			<input type="search" bind:value="search" />
+		</header>
 
-		<input type="search" bind:value="search" />
-	</header>
-
-	<div>
-		{{#each searchedContents as child}}
-			{{#if child.type === 'directory'}}
-				<Directory
-					name="{{ child.name }}"
-					size="{{ child.size }}"
-					lastModified="{{ child.lastModified }}"
-					children="{{ child.children }}"
-					hidden="{{ child.hidden }}" />
-			{{else}}
-				<File
-					name="{{ child.name }}"
-					size="{{ child.size }}"
-					lastModified="{{ child.lastModified }}"
-					hidden="{{ child.hidden }}" />
-			{{/if}}
-		{{/each}}
+		<div>
+			{{#each searchedContents as child}}
+				{{#if child.type === 'directory'}}
+					<Directory
+						name="{{ child.name }}"
+						size="{{ child.size }}"
+						lastModified="{{ child.lastModified }}"
+						children="{{ child.children }}"
+						hidden="{{ child.hidden }}" />
+				{{else}}
+					<File
+						name="{{ child.name }}"
+						size="{{ child.size }}"
+						lastModified="{{ child.lastModified }}"
+						hidden="{{ child.hidden }}" />
+				{{/if}}
+			{{/each}}
+		</div>
 	</div>
 </div>
 
@@ -167,6 +168,13 @@ export default {
 </script>
 
 <style>
+	@import url('https://fonts.googleapis.com/css?family=Khand');
+	@import url('https://fonts.googleapis.com/css?family=Droid+Sans+Mono');
+
+	* {
+		font-family: 'Khand', sans-serif;
+	}
+
 	header {
 		display: flex;
 		flex-direction: row;
@@ -177,5 +185,24 @@ export default {
 	h1 {
 		margin: 0;
 		flex-grow: 1;
+		font-size: 3rem;
+		color: #263238;
+	}
+
+	input[type="search"] {
+		border: 1px solid #ECEFF1;
+		border-radius: 0.25rem;
+		padding: 1rem;
+		height: 3rem;
+		font-size: 1rem;
+	}
+
+	.wrapper {
+		width: 1024px;
+		margin: 0 auto;
+	}
+
+	a, a:hover, a:visited {
+		text-decoration: none;
 	}
 </style>
