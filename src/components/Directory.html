@@ -5,6 +5,7 @@
 		<Node type="directory"
 			name="{{ name }}"
 			size="{{ size }}"
+			path="{{ path }}"
 			lastModified="{{ lastModified }}" />
 
 		{{#if expanded}}
@@ -14,6 +15,7 @@
 						<:Self
 							name="{{ child.name }}"
 							size="{{ child.size }}"
+							path="{{ child.path }}"
 							lastModified="{{ lastModified }}"
 							children="{{ child.children }}"
 							hidden="{{ child.hidden }}" />
@@ -21,6 +23,7 @@
 						<File
 							name="{{ child.name }}"
 							size="{{ child.size }}"
+							path="{{ child.path }}"
 							lastModified="{{ lastModified }}"
 							hidden="{{ child.hidden }}" />
 					{{/if}}
@@ -41,6 +44,7 @@ export default {
 		return {
 			name: '',
 			size: 0,
+			path: '',
 			lastModified: 'today',
 			children: [],
 			hidden: false,

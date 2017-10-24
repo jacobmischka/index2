@@ -3,7 +3,7 @@
 		{{{ icon }}}
 	</span>
 	<span class="name">
-		<a href="#">
+		<a href="{{ `/${path}` }}">
 			<span>{{ basename }}</span>
 			<span class="extension">{{ extension }}</span>
 		</a>
@@ -26,6 +26,7 @@ export default {
 			type: 'file',
 			name: '',
 			size: 0,
+			path: '',
 			lastModified: 'today'
 		};
 	},
