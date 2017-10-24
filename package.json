@@ -14,7 +14,7 @@
     "start": "run-p watch serve",
     "build": "webpack -p",
     "watch": "webpack -w",
-    "serve": "php -S localhost:8080 -t dist/",
+    "serve": "php -S localhost:8088 -t dist/",
     "lint": "eslint --ext .js,.html src"
   },
   "dependencies": {
