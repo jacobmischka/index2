@@ -1,6 +1,7 @@
 <div class="{{ `file ${hidden ? 'hidden' : ''}` }}">
 	<Node name="{{ name }}"
 		size="{{ size }}"
+		path="{{ path }}"
 		lastModified="{{ lastModified }}" />
 </div>
 
@@ -12,6 +13,7 @@ export default {
 		return {
 			name: '',
 			size: 0,
+			path: '',
 			lastModified: 'today',
 			hidden: false
 		};
