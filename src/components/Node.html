@@ -8,11 +8,15 @@
 			<span class="extension">{{ extension }}</span>
 		</a>
 	</span>
-	<span class="size">
-		{{ size }}
-	</span>
+
+	{{#if type === 'file'}}
+		<span class="size">
+			{{ size }}
+		</span>
+	{{/if}}
+
 	<span class="last-modified">
-		{{ lastModified }}
+		{{ lastModifiedDisplay }}
 	</span>
 </div>
 
@@ -48,6 +52,15 @@ export default {
 		},
 		icon(extension, type) {
 			return getIcon(extension, type);
+		},
+		lastModifiedDisplay(lastModified) {
+			try {
+				return new Date(lastModified).toDateString();
+			} catch (e) {
+				console.error(e);
+			}
+
+			return lastModified;
 		}
 	}
 };
