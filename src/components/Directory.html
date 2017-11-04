@@ -1,6 +1,10 @@
 <div class="{{ `directory ${hidden ? 'hidden' : ''}` }}">
-	<button type="button" class="{{ expanded ? 'contract' : 'expand' }}" on:click="set({expanded: !expanded})">
+	<button type="button"
+			class="{{ expanded ? 'contract' : 'expand' }}"
+			on:click="set({expanded: !expanded})">
+		Expand
 	</button>
+
 	<div class="details">
 		<Node type="directory"
 			name="{{ name }}"
@@ -17,7 +21,6 @@
 							size="{{ child.size }}"
 							path="{{ child.path }}"
 							lastModified="{{ lastModified }}"
-							children="{{ child.children }}"
 							hidden="{{ child.hidden }}" />
 					{{else}}
 						<File
@@ -37,7 +40,7 @@
 import Node from './Node.html';
 import File from './File.html';
 
-import { sortNodes } from '../utils.js';
+import { getContents, sortNodes } from '../utils.js';
 
 export default {
 	data() {
@@ -53,10 +56,23 @@ export default {
 		};
 	},
 
+	oncreate() {
+		getContents(this.get('path')).then(children => {
+			this.set({children});
+		}).catch(err => {
+			console.error(err);
+		});
+	},
+
 	computed: {
 		sortedChildren(children) {
-			return sortNodes(children);
+			if (children)
+				return sortNodes(children);
 		}
+	},
+
+	methods: {
+
 	},
 
 	components: {

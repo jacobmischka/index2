@@ -3,7 +3,7 @@
 		{{{ icon }}}
 	</span>
 	<span class="name">
-		<a href="{{ `/${path}` }}">
+		<a href="{{ `${path}` }}">
 			<span>{{ basename }}</span>
 			<span class="extension">{{ extension }}</span>
 		</a>
@@ -32,11 +32,15 @@ export default {
 	},
 
 	computed: {
-		basename(name) {
-			return getBasename(name);
+		basename(name, type) {
+			return type === 'file'
+				? getBasename(name)
+				: name;
 		},
-		extension(name) {
-			return getExtension(name);
+		extension(name, type) {
+			return type === 'file'
+				? getExtension(name)
+				: '';
 		},
 		icon(extension, type) {
 			return getIcon(extension, type);

@@ -1,10 +1,29 @@
+export function jsonOrThrow(response) {
+	if (response.ok)
+		return response.json();
+
+	throw new Error(response.statusText);
+}
+
+export function getContents(path) {
+	return fetch(`/?path=${path}`).then(jsonOrThrow);
+}
+
 export function nodeSorter(a, b) {
 	if (a.type === 'directory' && b.type === 'file')
 		return -1;
 	if (a.type === 'file' && b.type === 'directory')
 		return 1;
 
-	return a.name - b.name;
+	const aName = a.name.toLowerCase();
+	const bName = b.name.toLowerCase();
+
+	if (aName < bName)
+		return -1;
+	if (aName > bName)
+		return 1;
+
+	return 0;
 }
 
 export function sortNodes(nodes) {
@@ -23,7 +42,7 @@ export function traverseTree(contents, nodeCallback) {
 		if (calledBackNode)
 			newNode = calledBackNode;
 
-		if (newNode.type === 'directory')
+		if (newNode.type === 'directory' && newNode.children)
 			newNode.children = traverseTree(newNode.children, nodeCallback);
 
 		newContents.push(newNode);
@@ -35,9 +54,11 @@ export function traverseTree(contents, nodeCallback) {
 export function flattenTree(contents) {
 	const flatContents = [];
 
-	traverseTree(contents, node => {
-		flatContents.push(node);
-	});
+	if (contents && Array.isArray(contents) && contents.length > 0) {
+		traverseTree(contents, node => {
+			flatContents.push(node);
+		});
+	}
 
 	return flatContents;
 }
@@ -54,13 +75,13 @@ export function recursivelyFlattenChildren(contents) {
 }
 
 export function getBasename(name) {
-	return name.includes('.')
+	return (name.includes('.') && name.lastIndexOf('.') > 0)
 		? name.substring(0, name.lastIndexOf('.'))
 		: name;
 }
 
 export function getExtension(name) {
-	return name.includes('.')
+	return (name.includes('.') && name.lastIndexOf('.') > 0)
 		? name.substring(name.lastIndexOf('.'))
 		: '';
 }

@@ -41,6 +41,7 @@ import 'typeface-droid-sans-mono';
 import 'typeface-khand';
 
 import {
+	getContents,
 	flattenTree,
 	recursivelyFlattenChildren,
 	sortNodes,
@@ -51,80 +52,18 @@ export default {
 	data() {
 		return {
 			title: 'index2',
-			contents: [
-				{
-					"type": "directory",
-					"name": "testdir",
-					"size": "403942",
-					"lastModified": "2017-10-18",
-					"path": "testdir",
-					"children": [
-						{
-							"type": "file",
-							"name": "testfile.png",
-							"size": "523",
-							"lastModified": "2017-10-18",
-							"path": "testdir/testfile.png"
-						},
-						{
-							"type": "file",
-							"name": "testfile2.png",
-							"size": "523",
-							"lastModified": "2017-10-18",
-							"path": "testdir/testfile2.png"
-						},
-						{
-							"type": "directory",
-							"name": "nested directory",
-							"size": "52321",
-							"lastModified": "2017-10-18",
-							"path": "testdir/nested directory",
-							"children": [
-								{
-									"type": "file",
-									"name": "cake.txt",
-									"size": "523",
-									"lastModified": "2017-10-18",
-									"path": "testdir/nested directory/cake.txt"
-								},
-								{
-									"type": "file",
-									"name": "pie.md",
-									"size": "523",
-									"lastModified": "2017-10-18",
-									"path": "testdir/nested directory/pie.md"
-								}
-							]
-						}
-					]
-				},
-				{
-					"type": "directory",
-					"name": "testdir2",
-					"size": "403942",
-					"lastModified": "2017-10-18",
-					"path": "testdir2",
-					"children": [
-						{
-							"type": "file",
-							"name": "apple.png",
-							"size": "523",
-							"lastModified": "2017-10-18",
-							"path": "testdir2/apple.png"
-						},
-						{
-							"type": "file",
-							"name": "banana.jpg",
-							"size": "523",
-							"lastModified": "2017-10-18",
-							"path": "testdir2/banana.jpg"
-						}
-					]
-				}
-			],
+			contents: [],
 
 			search: ''
 		};
+	},
+
+	oncreate() {
+		getContents('.').then(contents => {
+			this.set({contents})
+		}).catch(err => {
+			console.error(err);
+		});
 	},
 
 	computed: {
@@ -137,7 +76,7 @@ export default {
 		flatContentsFlatChildren(flatContents) {
 			return flatContents.map(node => {
 				node = Object.assign({}, node);
-				if (node.type === 'directory')
+				if (node.type === 'directory' && node.children)
 					node.flatChildren = flattenTree(node.children);
 
 				return node;
