@@ -31,7 +31,7 @@ import Contents from './Contents.html';
 
 import arrow from '../assets/arrow.svg';
 
-import { getContents, sortNodes } from '../utils.js';
+import { getContents } from '../utils.js';
 
 export default {
 	data() {
@@ -57,12 +57,6 @@ export default {
 				&& Array.isArray(children)
 				&& children.length > 0
 			);
-		},
-		sortedChildren(children) {
-			if (children)
-				return sortNodes(children);
-
-			return [];
 		}
 	},
 
