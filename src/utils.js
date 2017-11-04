@@ -15,9 +15,9 @@ export function searchForContents(query) {
 
 export function getNodeSorter(attr = 'name') {
 	return (a, b) => {
-		if (a.type === 'directory' && b.type === 'file')
+		if (a.type === 'directory' && b.type !== 'directory')
 			return -1;
-		if (a.type === 'file' && b.type === 'directory')
+		if (a.type !== 'directory' && b.type === 'directory')
 			return 1;
 
 		const aName = a[attr].toLowerCase();
