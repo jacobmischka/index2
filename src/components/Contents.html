@@ -1,25 +1,23 @@
-<div>
-	{{#each sortedContents as child}}
-		{{#if child.type === 'directory'}}
-			<Directory
-				name="{{ child.name }}"
-				size="{{ child.size }}"
-				path="{{ child.path }}"
-				lastModified="{{ child.lastModified }}"
-				children="{{ child.children }}"
-				hidden="{{ child.hidden }}"
-				displayPath="{{ displayPath }}" />
-		{{else}}
-			<File
-				name="{{ child.name }}"
-				size="{{ child.size }}"
-				path="{{ child.path }}"
-				lastModified="{{ child.lastModified }}"
-				hidden="{{ child.hidden }}"
-				displayPath="{{ displayPath }}" />
-		{{/if}}
-	{{/each}}
-</div>
+{{#each sortedContents as child}}
+	{{#if child.type === 'directory'}}
+		<Directory
+			name="{{ child.name }}"
+			size="{{ child.size }}"
+			path="{{ child.path }}"
+			lastModified="{{ child.lastModified }}"
+			children="{{ child.children }}"
+			hidden="{{ child.hidden }}"
+			displayPath="{{ displayPath }}" />
+	{{else}}
+		<File
+			name="{{ child.name }}"
+			size="{{ child.size }}"
+			path="{{ child.path }}"
+			lastModified="{{ child.lastModified }}"
+			hidden="{{ child.hidden }}"
+			displayPath="{{ displayPath }}" />
+	{{/if}}
+{{/each}}
 
 <script>
 import Directory from './Directory.html';
