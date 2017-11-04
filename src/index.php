@@ -1,5 +1,6 @@
 <?php
 	const FORMAT = 'c';
+	date_default_timezone_set('UTC');
 
 	function getContents($directory) {
 		$contents = [];
