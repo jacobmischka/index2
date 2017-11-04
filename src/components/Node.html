@@ -11,7 +11,7 @@
 
 	{{#if type === 'file'}}
 		<span class="size">
-			{{ size }}
+			{{ prettyBytes(size) }}
 		</span>
 	{{/if}}
 
@@ -21,6 +21,8 @@
 </div>
 
 <script>
+import prettyBytes from 'pretty-bytes';
+
 import { getBasename, getExtension } from '../utils.js';
 import { getIcon } from '../icons.js';
 
@@ -34,6 +36,10 @@ export default {
 			lastModified: 'today',
 			displayPath: false
 		};
+	},
+
+	helpers: {
+		prettyBytes
 	},
 
 	computed: {
