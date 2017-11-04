@@ -20,6 +20,7 @@ module.exports = {
 			},
 			{
 				test: /\.html$/,
+				exclude: /index\.html$/,
 				use: [
 					'babel-loader',
 					'svelte-loader'
