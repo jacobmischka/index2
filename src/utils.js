@@ -9,26 +9,32 @@ export function getContents(path) {
 	return fetch(`/?path=${path}`).then(jsonOrThrow);
 }
 
-export function nodeSorter(a, b) {
-	if (a.type === 'directory' && b.type === 'file')
-		return -1;
-	if (a.type === 'file' && b.type === 'directory')
-		return 1;
-
-	const aName = a.name.toLowerCase();
-	const bName = b.name.toLowerCase();
-
-	if (aName < bName)
-		return -1;
-	if (aName > bName)
-		return 1;
-
-	return 0;
+export function searchForContents(query) {
+	return fetch(`/?search=${query}`).then(jsonOrThrow);
 }
 
-export function sortNodes(nodes) {
+export function getNodeSorter(attr = 'name') {
+	return (a, b) => {
+		if (a.type === 'directory' && b.type === 'file')
+			return -1;
+		if (a.type === 'file' && b.type === 'directory')
+			return 1;
+
+		const aName = a[attr].toLowerCase();
+		const bName = b[attr].toLowerCase();
+
+		if (aName < bName)
+			return -1;
+		if (aName > bName)
+			return 1;
+
+		return 0;
+	};
+}
+
+export function sortNodes(nodes, attr = 'name') {
 	nodes = nodes.slice();
-	nodes.sort(nodeSorter);
+	nodes.sort(getNodeSorter(attr));
 
 	return nodes;
 }
@@ -74,14 +80,27 @@ export function recursivelyFlattenChildren(contents) {
 	});
 }
 
+export function hasExtension(name) {
+	return (
+		name.includes('.')
+		&& name.lastIndexOf('.') > 0
+		&& (
+			!name.includes('/')
+			// Make sure there's at least one character between last / and .
+			// To avoid returning true for `/.bashrc` for example
+			|| name.lastIndexOf('.') > name.lastIndexOf('/') + 1
+		)
+	);
+}
+
 export function getBasename(name) {
-	return (name.includes('.') && name.lastIndexOf('.') > 0)
+	return hasExtension(name)
 		? name.substring(0, name.lastIndexOf('.'))
 		: name;
 }
 
 export function getExtension(name) {
-	return (name.includes('.') && name.lastIndexOf('.') > 0)
+	return hasExtension(name)
 		? name.substring(name.lastIndexOf('.'))
 		: '';
 }

@@ -2,7 +2,7 @@
 	<button type="button"
 			class="{{ expanded ? 'contract' : 'expand' }}"
 			on:click="set({expanded: !expanded})">
-		Expand
+		{{ expanded ? 'Collapse' : 'Expand' }}
 	</button>
 
 	<div class="details">
@@ -10,7 +10,8 @@
 			name="{{ name }}"
 			size="{{ size }}"
 			path="{{ path }}"
-			lastModified="{{ lastModified }}" />
+			lastModified="{{ lastModified }}"
+			displayPath="{{ displayPath }}" />
 
 		{{#if expanded}}
 			<div class="children">
@@ -50,17 +51,20 @@ export default {
 			path: '',
 			lastModified: 'today',
 			children: [],
-			hidden: false,
+			displayPath: false,
 
 			expanded: false
 		};
 	},
 
 	oncreate() {
-		getContents(this.get('path')).then(children => {
-			this.set({children});
-		}).catch(err => {
-			console.error(err);
+		this.observe('expanded', expanded => {
+			if (expanded) {
+				const children = this.get('children');
+
+				if (!children || !Array.isArray(children) || children.length === 0)
+					this.getChildren();
+			}
 		});
 	},
 
@@ -68,11 +72,19 @@ export default {
 		sortedChildren(children) {
 			if (children)
 				return sortNodes(children);
+
+			return [];
 		}
 	},
 
 	methods: {
-
+		getChildren() {
+			getContents(this.get('path')).then(children => {
+				this.set({children});
+			}).catch(err => {
+				console.error(err);
+			});
+		}
 	},
 
 	components: {

@@ -27,19 +27,23 @@ export default {
 			name: '',
 			size: 0,
 			path: '',
-			lastModified: 'today'
+			lastModified: 'today',
+			displayPath: false
 		};
 	},
 
 	computed: {
-		basename(name, type) {
-			return type === 'file'
-				? getBasename(name)
-				: name;
+		displayName(displayPath, name, path) {
+			return displayPath ? path : name;
 		},
-		extension(name, type) {
+		basename(displayName, type) {
 			return type === 'file'
-				? getExtension(name)
+				? getBasename(displayName)
+				: displayName;
+		},
+		extension(displayName, type) {
+			return type === 'file'
+				? getExtension(displayName)
 				: '';
 		},
 		icon(extension, type) {

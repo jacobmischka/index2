@@ -2,7 +2,8 @@
 	<Node name="{{ name }}"
 		size="{{ size }}"
 		path="{{ path }}"
-		lastModified="{{ lastModified }}" />
+		lastModified="{{ lastModified }}"
+		displayPath="{{ displayPath }}" />
 </div>
 
 <script>
@@ -15,7 +16,7 @@ export default {
 			size: 0,
 			path: '',
 			lastModified: 'today',
-			hidden: false
+			displayPath: false
 		};
 	},
 
@@ -26,10 +27,6 @@ export default {
 </script>
 
 <style>
-	.file.hidden {
-		display: none;
-	}
-
 	.file > .node > .name > a {
 		color: #1E88E5;
 	}

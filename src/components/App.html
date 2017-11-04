@@ -2,12 +2,17 @@
 	<div class="wrapper">
 		<header>
 			<h1>{{ title }}</h1>
-			<input type="search" aria-label="Search"
-				bind:value="search" />
+			<form on:submit="submitSearch(event, search)">
+				<input type="search" aria-label="Search"
+					bind:value="search" />
+				<button type="submit">
+					Search
+				</button>
+			</form>
 		</header>
 
 		<div>
-			{{#each searchedContents as child}}
+			{{#each sortedContents as child}}
 				{{#if child.type === 'directory'}}
 					<Directory
 						name="{{ child.name }}"
@@ -15,14 +20,16 @@
 						path="{{ child.path }}"
 						lastModified="{{ child.lastModified }}"
 						children="{{ child.children }}"
-						hidden="{{ child.hidden }}" />
+						hidden="{{ child.hidden }}"
+						displayPath="{{ displayPath }}" />
 				{{else}}
 					<File
 						name="{{ child.name }}"
 						size="{{ child.size }}"
 						path="{{ child.path }}"
 						lastModified="{{ child.lastModified }}"
-						hidden="{{ child.hidden }}" />
+						hidden="{{ child.hidden }}"
+						displayPath="{{ displayPath }}" />
 				{{/if}}
 			{{/each}}
 		</div>
@@ -42,10 +49,8 @@ import 'typeface-khand';
 
 import {
 	getContents,
-	flattenTree,
-	recursivelyFlattenChildren,
-	sortNodes,
-	traverseTree
+	searchForContents,
+	sortNodes
 } from '../utils.js';
 
 export default {
@@ -54,55 +59,48 @@ export default {
 			title: 'index2',
 			contents: [],
 
-			search: ''
+			search: '',
+			displayPath: false
 		};
 	},
 
 	oncreate() {
-		getContents('.').then(contents => {
-			this.set({contents})
-		}).catch(err => {
-			console.error(err);
-		});
+		this.fetchContents();
 	},
 
 	computed: {
-		sortedContents(contents) {
-			return sortNodes(contents);
-		},
-		flatContents(sortedContents) {
-			return flattenTree(sortedContents);
-		},
-		flatContentsFlatChildren(flatContents) {
-			return flatContents.map(node => {
-				node = Object.assign({}, node);
-				if (node.type === 'directory' && node.children)
-					node.flatChildren = flattenTree(node.children);
+		sortedContents(contents, displayPath) {
+			return sortNodes(contents, displayPath ? 'path' : 'name');
+		}
+	},
 
-				return node;
-			})
-		},
-		index(flatContentsFlatChildren) {
-			return new Fuse(flatContentsFlatChildren, {
-				id: 'path',
-				keys: [
-					'path',
-					'flatChildren.path'
-				]
+	methods: {
+		fetchContents() {
+			getContents('.').then(contents => {
+				this.set({
+					contents,
+					displayPath: false
+				});
+			}).catch(err => {
+				console.error(err);
 			});
 		},
-		searchResults(index, search) {
-			return search
-				? index.search(search)
-				: index.list.map(node => node.path);
-		},
-		searchedContents(sortedContents, searchResults) {
-			return traverseTree(sortedContents, node => {
-				let hidden = !searchResults.includes(node.path);
+		submitSearch(event, search) {
+			event.preventDefault();
 
-				return Object.assign({}, node, {
-					hidden
+			if (search)
+				this.searchContents(search);
+			else
+				this.fetchContents();
+		},
+		searchContents(query) {
+			searchForContents(query).then(contents => {
+				this.set({
+					contents,
+					displayPath: true
 				});
+			}).catch(err => {
+				console.error(err);
 			});
 		}
 	},
@@ -136,9 +134,8 @@ export default {
 	input[type="search"] {
 		border: 1px solid #ECEFF1;
 		border-radius: 0.25rem;
-		padding: 1rem;
-		height: 3rem;
 		font-size: 1rem;
+		padding: calc(0.5rem - 1px) 1rem;
 	}
 
 	.wrapper {

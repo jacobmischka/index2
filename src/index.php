@@ -12,11 +12,37 @@
 			$contents[] = getFileData($fileInfo);
 		}
 
-		return json_encode($contents, JSON_PRETTY_PRINT);
+		return $contents;
+	}
+
+	function streamSearchResults($directory, $query) {
+		$matchIter = new RegexIterator(
+			new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator(
+					"./{$directory}",
+					FilesystemIterator::SKIP_DOTS
+				),
+				RecursiveIteratorIterator::SELF_FIRST
+			),
+			"/^.*{$query}[^\\/]*$/i",
+			RecursiveRegexIterator::MATCH
+		);
+
+		$matchIter->rewind();
+
+		while ($matchIter->valid()) {
+			echo json_encode(getFileData($matchIter->current()));
+
+			$matchIter->next();
+			if ($matchIter->valid())
+				echo ',';
+		}
 	}
 
 	function stripDotSlash($path) {
 		$path = str_replace('./', '', $path);
+		if (strpos($path, '/') === 0)
+			$path = substr($path, 1);
 		return ($path == '.')
 			? ''
 			: $path;
@@ -30,7 +56,7 @@
 	}
 
 	function getFileData($fileInfo) {
-		$path = stripDotSlash($fileInfo->getPath()) . '/' . $fileInfo->getFilename();
+		$path = stripDotSlash($fileInfo->getPath() . '/' . $fileInfo->getFilename());
 
 		return [
 			'type' => getFileType($fileInfo->getType()),
@@ -41,9 +67,18 @@
 		];
 	}
 
-	if (!empty($_GET['path'])) {
+	if (!empty($_GET['search'])) {
 		header('Content-Type: application/json');
-		echo getContents($_GET['path']);
+		$path = empty($_GET['path'])
+			? '.'
+			: $_GET['path'];
+
+		echo '[';
+		streamSearchResults($path, $_GET['search']);
+		echo ']';
+	} elseif (!empty($_GET['path'])) {
+		header('Content-Type: application/json');
+		echo json_encode(getContents($_GET['path']));
 	} else {
 ?>
 
