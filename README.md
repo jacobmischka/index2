@@ -6,6 +6,10 @@ The next-generation index page.
 
 In the future we plan to support a multitude of server backends, but for now PHP is supported.
 
+## Installation
+
+Drop the built `index.php` into the directory you want to serve from.
+
 ## Implementing a backend
 
 It should be straightforward to implement a backend for a new server type, there are only three things that the backend must do.
