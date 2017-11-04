@@ -6,11 +6,11 @@ export function jsonOrThrow(response) {
 }
 
 export function getContents(path) {
-	return fetch(`/?path=${path}`).then(jsonOrThrow);
+	return fetch(`?path=${path}`).then(jsonOrThrow);
 }
 
 export function searchForContents(query) {
-	return fetch(`/?search=${query}`).then(jsonOrThrow);
+	return fetch(`?search=${query}`).then(jsonOrThrow);
 }
 
 export function getNodeSorter(attr = 'name') {
