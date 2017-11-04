@@ -55,7 +55,7 @@ export default {
 		},
 		lastModifiedDisplay(lastModified) {
 			try {
-				return new Date(lastModified).toDateString();
+				return new Date(lastModified).toLocaleString();
 			} catch (e) {
 				console.error(e);
 			}
