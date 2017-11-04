@@ -2,6 +2,8 @@
 
 The next-generation index page.
 
+![Screenshot](screenshot.png)
+
 In the future we plan to support a multitude of server backends, but for now PHP is supported.
 
 ## Implementing a backend
@@ -16,4 +18,4 @@ Responses for items 2 and 3 should validate against included `schema.json` JSON 
 
 ## ⚠ **WARNING** ⚠
 
-It should be assumed that this is currently unsafe and metadata for any file on your system can be exposed. Please use discretion before deploying this on a server that contains any private or important files.
+It should be assumed that the existing PHP backend is currently unsafe and metadata for any file on your system can be exposed. Please use discretion before deploying this on a server that contains any private or important files.
