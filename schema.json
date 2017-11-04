@@ -1,5 +1,5 @@
 {
-	"$id": "https://raw.githubusercontent.com/jacobmischka/index2/master/package.json#",
+	"$id": "https://raw.githubusercontent.com/jacobmischka/index2/master/schema.json#",
 	"type": "array",
 	"items": {
 		"oneOf": [
@@ -8,42 +8,56 @@
 		]
 	},
 	"definitions": {
-		"file": {
-			"title": "File",
+		"node": {
 			"type": "object",
 			"properties": {
-				"type": {"const": "file"},
-				"mime": {"type": "string"},
+				"type": {"enum": ["file", "link", "directory"]},
 				"name": {"type": "string"},
-				"size": {
-					"type": "object",
-					"properties": {
-						"value": {"type": "number"},
-						"unit": {"type": "string"}
-					}
-				}
+				"size": {"type": "number"},
+				"lastModified": {"type": "string", "format": "date-time"},
+				"path": {"type": "string"}
 			},
 			"required": [
 				"type",
-				"name"
+				"name",
+				"path",
+				"lastModified"
+			]
+		},
+		"file": {
+			"title": "File",
+			"type": "object",
+			"allOf": [
+				{"$ref": "#/definitions/node"},
+				{
+					"properties": {
+						"type": {"enum": ["file", "link"]}
+					},
+					"required": [
+						"size"
+					]
+				}
 			]
 		},
 		"directory": {
 			"title": "Directory",
 			"type": "object",
-			"properties": {
-				"type": {"const": "directory"},
-				"name": {"type": "string"},
-				"contents": {
-					"type": "array",
-					"items": {
-						"$ref": "#"
-					}
+			"allOf": [
+				{"$ref": "#/definitions/node"},
+				{
+					"properties": {
+						"type": {"const": "directory"},
+						"children": {
+							"type": "array",
+							"items": {
+								"$ref": "#"
+							}
+						}
+					},
+					"required": [
+						"children"
+					]
 				}
-			},
-			"required": [
-				"type",
-				"name"
 			]
 		}
 	}
