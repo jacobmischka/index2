@@ -1,8 +1,12 @@
-<div class="{{ `directory ${hidden ? 'hidden' : ''}` }}">
+<div class="directory {{ hidden ? 'hidden' : '' }}">
 	<button type="button"
-			class="{{ expanded ? 'contract' : 'expand' }}"
-			on:click="set({expanded: !expanded})">
-		{{ expanded ? 'Collapse' : 'Expand' }}
+			class="expand-button
+				{{ expanded ? 'expanded' : 'collapsed' }}
+				{{ fetching ? 'fetching' : '' }}
+			"
+			disabled="{{ !expandable || fetching }}"
+			on:click="toggleExpansion()">
+		{{{ arrow }}}
 	</button>
 
 	<div class="details">
@@ -41,6 +45,8 @@
 import Node from './Node.html';
 import File from './File.html';
 
+import arrow from '../assets/arrow.svg';
+
 import { getContents, sortNodes } from '../utils.js';
 
 export default {
@@ -53,22 +59,21 @@ export default {
 			children: [],
 			displayPath: false,
 
-			expanded: false
+			expandable: true,
+			expanded: false,
+			fetching: false,
+			arrow
 		};
 	},
 
-	oncreate() {
-		this.observe('expanded', expanded => {
-			if (expanded) {
-				const children = this.get('children');
-
-				if (!children || !Array.isArray(children) || children.length === 0)
-					this.getChildren();
-			}
-		});
-	},
-
 	computed: {
+		hasChildren(children) {
+			return (
+				children
+				&& Array.isArray(children)
+				&& children.length > 0
+			);
+		},
 		sortedChildren(children) {
 			if (children)
 				return sortNodes(children);
@@ -78,11 +83,37 @@ export default {
 	},
 
 	methods: {
+		toggleExpansion() {
+			if (!this.get('expandable'))
+				return;
+
+			if (this.get('expanded')) {
+				this.set({ expanded: false });
+			} else if (!this.get('hasChildren')) {
+				this.getChildren();
+			} else {
+				this.set({ expanded: true });
+			}
+		},
 		getChildren() {
+			this.set({ fetching: true });
+
 			getContents(this.get('path')).then(children => {
-				this.set({children});
+				const expandable = (
+					children
+					&& Array.isArray(children)
+					&& children.length > 0
+				);
+
+				this.set({
+					fetching: false,
+					children,
+					expandable,
+					expanded: expandable
+				});
 			}).catch(err => {
 				console.error(err);
+				this.set({ fetching: false });
 			});
 		}
 	},
@@ -101,8 +132,31 @@ export default {
 		align-items: flex-start;
 	}
 
-	.directory.hidden {
-		display: none;
+	.expand-button {
+		border: none;
+		outline: none;
+		background: none;
+		height: 2em;
+	}
+
+	.expand-button:disabled {
+		opacity: 0.25;
+	}
+
+	.expand-button.fetching:disabled {
+		opacity: 1;
+		cursor: wait;
+	}
+
+	.expand-button svg {
+		width: 1em;
+		height: 1em;
+		vertical-align: middle;
+		transition: transform 0.05s ease-out;
+	}
+
+	.expand-button.expanded svg {
+		transform: rotate(0.25turn);
 	}
 
 	.details {
