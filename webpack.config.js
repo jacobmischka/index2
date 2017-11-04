@@ -7,7 +7,7 @@ const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = env => {
-	const productionPlugins = env.production
+	const productionPlugins = env && env.production
 		? [
 			new webpack.DefinePlugin({
 				NODE_ENV: 'production'
