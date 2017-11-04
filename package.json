@@ -12,7 +12,7 @@
   "private": false,
   "scripts": {
     "start": "run-p watch serve",
-    "build": "webpack -p",
+    "build": "webpack --env.production",
     "watch": "webpack -w",
     "serve": "php -S localhost:8088 -t dist/",
     "lint": "eslint --ext .js,.html src"
@@ -48,6 +48,7 @@
     "svg-inline-loader": "^0.8.0",
     "typeface-droid-sans-mono": "^0.0.40",
     "typeface-khand": "^0.0.40",
+    "uglifyjs-webpack-plugin": "^1.0.1",
     "webpack": "^3.8.1"
   }
 }
