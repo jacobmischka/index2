@@ -3,10 +3,12 @@
 	date_default_timezone_set('UTC');
 
 	function getContents($directory) {
+		$path = "./{$directory}";
+		checkPath($path);
+
 		$contents = [];
 
-		// FIXME: This is not safe.
-		foreach (new DirectoryIterator("./{$directory}") as $fileInfo) {
+		foreach (new DirectoryIterator($path) as $fileInfo) {
 			if ($fileInfo->isDot())
 				continue;
 
@@ -17,10 +19,13 @@
 	}
 
 	function streamSearchResults($directory, $query) {
+		$path = "./{$directory}";
+		checkPath($path);
+
 		$matchIter = new RegexIterator(
 			new RecursiveIteratorIterator(
 				new RecursiveDirectoryIterator(
-					"./{$directory}",
+					$path,
 					FilesystemIterator::SKIP_DOTS
 				),
 				RecursiveIteratorIterator::SELF_FIRST
@@ -38,6 +43,19 @@
 			if ($matchIter->valid())
 				echo ',';
 		}
+	}
+
+	function checkPath($path) {
+		// FIXME: This must be reviewed for safety, currently extremely naive
+
+		$realpath = realpath($path);
+
+		if (
+			!$realpath
+			// Check that input path is beneath indexed directory
+			|| strpos($realpath, realpath('.')) !== 0
+		)
+			throw new InvalidArgumentException("Invalid path");
 	}
 
 	function stripDotSlash($path) {

@@ -2,7 +2,7 @@
 
 The next-generation index page.
 
-In the future we plan to support a multitude of server backends, but for now only PHP is supported.
+In the future we plan to support a multitude of server backends, but for now PHP is supported.
 
 ## Implementing a backend
 
@@ -13,3 +13,7 @@ It should be straightforward to implement a backend for a new server type, there
 3. Recursively search for all filename matches specified by `search` search parameter with an optional starting path parameter (Route: `/?search={search}[&path={path}]`)
 
 Responses for items 2 and 3 should validate against included `schema.json` JSON schema.
+
+## ⚠ **WARNING** ⚠
+
+It should be assumed that this is currently unsafe and metadata for any file on your system can be exposed. Please use discretion before deploying this on a server that contains any private or important files.
