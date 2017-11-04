@@ -19,23 +19,7 @@
 
 		{{#if expanded}}
 			<div class="children">
-				{{#each sortedChildren as child}}
-					{{#if child.type === 'directory'}}
-						<:Self
-							name="{{ child.name }}"
-							size="{{ child.size }}"
-							path="{{ child.path }}"
-							lastModified="{{ lastModified }}"
-							hidden="{{ child.hidden }}" />
-					{{else}}
-						<File
-							name="{{ child.name }}"
-							size="{{ child.size }}"
-							path="{{ child.path }}"
-							lastModified="{{ lastModified }}"
-							hidden="{{ child.hidden }}" />
-					{{/if}}
-				{{/each}}
+				<Contents contents="{{ children }}" />
 			</div>
 		{{/if}}
 	</div>
@@ -43,7 +27,7 @@
 
 <script>
 import Node from './Node.html';
-import File from './File.html';
+import Contents from './Contents.html';
 
 import arrow from '../assets/arrow.svg';
 
@@ -120,7 +104,7 @@ export default {
 
 	components: {
 		Node,
-		File
+		Contents
 	}
 };
 </script>

@@ -1,0 +1,49 @@
+<div>
+	{{#each sortedContents as child}}
+		{{#if child.type === 'directory'}}
+			<Directory
+				name="{{ child.name }}"
+				size="{{ child.size }}"
+				path="{{ child.path }}"
+				lastModified="{{ child.lastModified }}"
+				children="{{ child.children }}"
+				hidden="{{ child.hidden }}"
+				displayPath="{{ displayPath }}" />
+		{{else}}
+			<File
+				name="{{ child.name }}"
+				size="{{ child.size }}"
+				path="{{ child.path }}"
+				lastModified="{{ child.lastModified }}"
+				hidden="{{ child.hidden }}"
+				displayPath="{{ displayPath }}" />
+		{{/if}}
+	{{/each}}
+</div>
+
+<script>
+import Directory from './Directory.html';
+import File from './File.html';
+
+import { sortNodes } from '../utils.js';
+
+export default {
+	data() {
+		return {
+			contents: [],
+			displayPath: false
+		};
+	},
+
+	computed: {
+		sortedContents(contents, displayPath) {
+			return sortNodes(contents, displayPath ? 'path' : 'name');
+		}
+	},
+
+	components: {
+		Directory,
+		File
+	}
+};
+</script>

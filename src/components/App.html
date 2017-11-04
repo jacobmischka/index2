@@ -11,34 +11,13 @@
 			</form>
 		</header>
 
-		<div>
-			{{#each sortedContents as child}}
-				{{#if child.type === 'directory'}}
-					<Directory
-						name="{{ child.name }}"
-						size="{{ child.size }}"
-						path="{{ child.path }}"
-						lastModified="{{ child.lastModified }}"
-						children="{{ child.children }}"
-						hidden="{{ child.hidden }}"
-						displayPath="{{ displayPath }}" />
-				{{else}}
-					<File
-						name="{{ child.name }}"
-						size="{{ child.size }}"
-						path="{{ child.path }}"
-						lastModified="{{ child.lastModified }}"
-						hidden="{{ child.hidden }}"
-						displayPath="{{ displayPath }}" />
-				{{/if}}
-			{{/each}}
-		</div>
+		<Contents contents="{{ contents }}"
+			displayPath="{{ displayPath }}" />
 	</div>
 </div>
 
 <script>
-import Directory from './Directory.html';
-import File from './File.html';
+import Contents from './Contents.html';
 
 import search from '../assets/search.svg';
 
@@ -48,7 +27,6 @@ import 'typeface-khand';
 import {
 	getContents,
 	searchForContents,
-	sortNodes
 } from '../utils.js';
 
 export default {
@@ -64,12 +42,6 @@ export default {
 
 	oncreate() {
 		this.fetchContents();
-	},
-
-	computed: {
-		sortedContents(contents, displayPath) {
-			return sortNodes(contents, displayPath ? 'path' : 'name');
-		}
 	},
 
 	methods: {
@@ -104,8 +76,7 @@ export default {
 	},
 
 	components: {
-		Directory,
-		File
+		Contents
 	}
 };
 </script>
